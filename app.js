@@ -7,8 +7,28 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var auth = require('./routes/auth');
+var groups = require('./routes/groups');
 
 var app = express();
+
+// Connect to database
+var db = require('./helper/database');
+
+// Passport authentication setup
+var passport = require('passport');
+var { GoogleStrategy, FacebookStrategy } = require('./helper/passport');
+passport.use(GoogleStrategy);
+passport.use(FacebookStrategy);
+
+// Configure Passport authenticated session persistence.
+passport.serializeUser(function(user, cb) {
+  cb(null, {id: user._id});
+});
+
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,9 +41,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+
+// Initialize Passport and restore authentication state, if any, from the
+// session.
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/auth', auth);
+app.use('/groups', groups);
+
+// Temp testing stuff
+app.get('/login',
+  function(req, res){
+    res.render('login');
+  });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
