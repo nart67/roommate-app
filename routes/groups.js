@@ -5,6 +5,9 @@ var User = require('../model/users').User;
 
 router.use(require('connect-ensure-login').ensureLoggedIn());
 
+// Task list subroute
+router.use('/:groupId/lists', require('./task-lists'));
+
 // Update group
 router.put('/:id', function(req, res) {
     user_id = req.user.id;
