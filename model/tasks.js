@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var taskSchema = new Schema({
     title: {type: String, required: true},
-    task_list: {type: Schema.Types.ObjectId, ref: 'TaskList', required: true},
+    task_list: {type: Schema.Types.ObjectId, ref: 'TaskList', required: true, index: true},
     description: String,
     date_added: {type: Date, default: Date.now},
     date_due: Date

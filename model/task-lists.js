@@ -6,6 +6,8 @@ var taskListSchema = new Schema({
     group: {type: Schema.Types.ObjectId, ref: 'Group'}
 });
 
+taskListSchema.index({ displayName: 1, group: 1 }, { unique: true });
+
 taskListSchema.statics.updateList = function(id, user_id, newTaskList, callback) {
     this.findById(id).populate('group').exec(function(err, taskList) {
         if (err) {
