@@ -30,7 +30,12 @@ router.put('/:id', function(req, res) {
     id = req.params.id;
     Group.deleteGroup(id, user_id, function(err, group) {
       if (err || !group) res.status(404).json({message: "Not found"});
-      else res.status(200).json({message: "Delete successful"});
+      else {
+        User.findById(req.user.id, function(err, user) {
+          user.removeGroup(newGroup._id);
+          res.status(200).json({message: "Delete successful"});
+        });
+      }
     })
   });
   

@@ -13,6 +13,10 @@ userSchema.method('addGroup', function(group_id) {
   this.update({ $push: {groups: group_id}}, {}, () => {});
 });
 
+userSchema.method('removeGroup', function(group_id) {
+  this.update({ $pull: {groups: group_id}}, {}, () => {});
+});
+
 userSchema.statics.findOrCreate = function findOrCreate(user, callback) {
     const self = this;
     self.findOne(user, (err, result) => {
