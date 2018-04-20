@@ -9,6 +9,10 @@ var userSchema = new Schema({
     groups: [{type: Schema.Types.ObjectId, ref: 'Group'}]
 });
 
+userSchema.method('addGroup', function(group_id) {
+  this.update({ $push: {groups: group_id}}, {}, () => {});
+});
+
 userSchema.statics.findOrCreate = function findOrCreate(user, callback) {
     const self = this;
     self.findOne(user, (err, result) => {

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Group = require('../model/groups').Group;
+var User = require('../model/users').User;
 
 router.use(require('connect-ensure-login').ensureLoggedIn());
 
@@ -36,11 +37,15 @@ router.put('/:id', function(req, res) {
       owner: req.user.id,
       displayName: req.body.displayName,
     });
-    console.log(newGroup);
     newGroup.save(function(err) {
       if (err) res.status(409).json({message: "Add failed"});
-      else res.status(201).json({message: "Add successful", group: newGroup});
-    })
+      else {
+        User.findById(req.user.id, function(err, user) {
+          user.addGroup(newGroup._id);
+          res.status(201).json({message: "Add successful", group: newGroup});
+        });
+      }
+    });
   });
 
   function missing(res) {
