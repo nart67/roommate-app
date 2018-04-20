@@ -1,10 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var userSchema = require('./users').userSchema;
-
-var User = mongoose.model('User', userSchema);
-
 var groupSchema = new Schema({
     displayName: {type: String, required: true},
     owner: {type: Schema.Types.ObjectId, ref: 'User', required: true}

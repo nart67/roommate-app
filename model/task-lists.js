@@ -1,10 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var taskListSchema = require('./groups').groupSchema;
-
-var Group = mongoose.model('Group', taskListSchema);
-
 var taskListSchema = new Schema({
     displayName: String,
     group: {type: Schema.Types.ObjectId, ref: 'Group'}
