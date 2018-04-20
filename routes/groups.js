@@ -18,7 +18,7 @@ router.put('/:id', function(req, res) {
       return;
     }
     var newGroup = JSON.parse(req.body.group);
-    group.updateGroup(id, user_id, newGroup, function(err) {
+    Group.updateGroup(id, user_id, newGroup, function(err) {
       if (err) res.status(404).json({message: "Not found"});
       else res.status(200).json({message: "Update successful"});
     })
@@ -28,7 +28,7 @@ router.put('/:id', function(req, res) {
   router.delete('/:id', function(req, res) {
     user_id = req.user.id;
     id = req.params.id;
-    group.deleteGroup(id, user_id, function(err, group) {
+    Group.deleteGroup(id, user_id, function(err, group) {
       if (err || !group) res.status(404).json({message: "Not found"});
       else res.status(200).json({message: "Delete successful"});
     })
