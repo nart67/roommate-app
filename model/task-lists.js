@@ -60,7 +60,7 @@ taskListSchema.statics.deleteList = function(id, user_id, callback) {
     })
 }
 
-var TaskList = mongoose.model('Task List', taskListSchema);
+var TaskList = mongoose.model('TaskList', taskListSchema);
 
 module.exports = {
     taskListSchema: taskListSchema,
