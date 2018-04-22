@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router({mergeParams: true});
 var TaskList = require('../model/task-lists').TaskList;
+var Group = require('../model/groups').Group;
 
 // Tasks subroute
 router.use('/:listId/tasks', require('./tasks'));
@@ -27,7 +28,12 @@ router.put('/:id', function(req, res) {
     id = req.params.id;
     TaskList.deleteList(id, user_id, function(err, taskList) {
       if (err || !taskList) res.status(404).json({message: "Not found"});
-      else res.status(200).json({message: "Delete successful"});
+      else {
+        Group.findById(req.params.groupId, function(err, group) {
+          group.removeList(newTaskList._id);
+          res.status(200).json({message: "Delete successful"});
+        });
+      }
     })
   });
   
@@ -39,7 +45,12 @@ router.put('/:id', function(req, res) {
     });
     newTaskList.save(function(err) {
       if (err) res.status(409).json({message: "Add failed"});
-      else res.status(201).json({message: "Add successful", taskList: newTaskList});
+      else {
+        Group.findById(req.params.groupId, function(err, group) {
+          group.addList(newTaskList._id);
+          res.status(201).json({message: "Add successful", taskList: newTaskList});
+        });
+      }
     });
   });
 
