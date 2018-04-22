@@ -28,6 +28,27 @@ userSchema.statics.findOrCreate = function findOrCreate(user, callback) {
     });
   };
 
+userSchema.statics.profile = function profile(user_id, callback) {
+  this.findById(user_id).populate(
+    { path :'groups', populate: { path: 'lists' }}
+  )
+  .exec(
+    function(err, profile) {
+      if (err) {
+        callback(err);
+        return;
+      }
+      
+      if (!profile) {
+          callback(new Error("not found"));
+          return;
+      }
+
+      callback(null, profile);
+    }
+  );
+}
+
 var User = mongoose.model('User', userSchema);
 
 module.exports = {
