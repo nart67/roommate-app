@@ -3,9 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 
 import SideNav from './components/SideNav/SideNav';
-import AppRouter from './routers/AppRouter';
 import { connect } from 'react-redux';
-import './actions/';
+import { login } from './actions/';
 
 class App extends Component {
   constructor(props) {
@@ -21,7 +20,7 @@ class App extends Component {
     .then(response => {
       const contentType = response.headers.get("content-type");
       if (contentType && contentType.indexOf("application/json") !== -1) {
-        this.props.dispatch({ type: 'LOGIN' });
+        this.props.dispatch(login());
       }
     });
   }
@@ -31,7 +30,6 @@ class App extends Component {
     return (
       <div className="App">
         <SideNav/>
-        <AppRouter/>
       </div>
     );
   }
