@@ -1,15 +1,21 @@
 
 import React, { Component } from 'react'
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import InboxIcon from '@material-ui/icons/Inbox';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/';
+import Group from './components/Group';
 
 class DrawerList extends Component {
+    state = {
+        profile: {}
+    }
+
     constructor(props) {
         super(props);
         this.logout = this.logout.bind(this);
+        this.getGroups = this.getGroups.bind(this);
+        this.getGroups();
     }
 
     logout() {
@@ -17,6 +23,18 @@ class DrawerList extends Component {
         .then(response => {
             this.props.dispatch(logout());
             this.props.history.push('/');
+        });
+    }
+
+    getGroups() {
+        fetch('/users', {credentials: 'same-origin'})
+        .then(response => {
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+              return response.json();
+            }
+        }).then(data => {
+            data && this.setState({profile: data.profile});
         });
     }
 
@@ -29,6 +47,12 @@ class DrawerList extends Component {
                     <ListItemText inset primary="Sign In" />
                 </ListItem>
             </Link>
+            }
+
+            {
+                this.state.profile.groups && this.state.profile.groups.map((group) => 
+                    <Group group={group} />
+                )
             }
 
             { !this.props.authenticated ||
