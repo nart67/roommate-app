@@ -52,6 +52,10 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/auth', auth);
 app.use('/groups', groups);
+app.use('/checkAuth', require('connect-ensure-login').ensureLoggedIn(),
+  function(req, res) {
+    res.status(200).json({message: 'logged in'});
+  });
 
 // Temp testing stuff
 app.get('/login',
