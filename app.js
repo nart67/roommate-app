@@ -9,6 +9,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var auth = require('./routes/auth');
 var groups = require('./routes/groups');
+var lists = require('./routes/task-lists');
 
 var app = express();
 
@@ -52,10 +53,16 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/auth', auth);
 app.use('/groups', groups);
+app.use('/lists', lists);
 app.use('/checkAuth', require('connect-ensure-login').ensureLoggedIn(),
   function(req, res) {
     res.status(200).json({message: 'logged in'});
   });
+
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
 
 // Temp testing stuff
 app.get('/login',

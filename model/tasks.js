@@ -47,6 +47,22 @@ taskSchema.statics.deleteTask = function(id, user_id, callback) {
     });
 }
 
+taskSchema.statics.findByListId = function(id, user_id, callback) {
+    this.find({ task_list: id }, function(err, tasks) {
+        if (err) {
+            callback(err);
+            return;
+        }
+        
+        if (!tasks) {
+            callback(new Error("not found"));
+            return;
+        }
+
+        callback(null, tasks);
+    });
+}
+
 var Task = mongoose.model('Task', taskSchema);
 
 module.exports = {

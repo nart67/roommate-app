@@ -4,8 +4,8 @@ var Task = require('../model/tasks').Task;
 
 // Update task
 router.put('/:id', function(req, res) {
-    user_id = req.user.id;
-    id = req.params.id;
+    var user_id = req.user.id;
+    var id = req.params.id;
     
     if (!req.body.task) {
       missing(res);
@@ -20,8 +20,8 @@ router.put('/:id', function(req, res) {
 
 // Delete task
 router.delete('/:id', function(req, res) {
-    user_id = req.user.id;
-    id = req.params.id;
+    var user_id = req.user.id;
+    var id = req.params.id;
     Task.deleteTask(id, user_id, function(err, task) {
       if (err || !task) res.status(404).json({message: "Not found"});
       else res.status(200).json({message: "Delete successful"});
@@ -37,6 +37,16 @@ router.post('/', function(req, res) {
       if (err) res.status(409).json({message: "Add failed"});
       else res.status(201).json({message: "Add successful", task: newTask});
     });
+});
+
+// Get tasks by list ID
+router.get('/', function(req, res) {
+  var list_id = req.params.listId;
+  var user_id = req.user.id;
+  Task.findByListId(list_id, user_id, function(err, tasks) {
+    if (err) res.status(404).json({message: "Not found"});
+    else res.status(200).json({message: "Get successful", tasks: tasks});
+  });
 });
 
 function missing(res) {
