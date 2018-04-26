@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { addList } from '../../actions/lists';
+import Grid from 'material-ui/Grid';
+import Paper from 'material-ui/Paper';
+import './ViewTaskList.css';
 
 class ViewTaskList extends Component {    
     constructor(props) {
@@ -21,15 +24,23 @@ class ViewTaskList extends Component {
             data && this.props.dispatch(addList(this.list_id, data.tasks));
         });
     }
-    
-
 
     render() {
         return (
-            this.props.lists[this.list_id] ? this.props.lists[this.list_id].map((task) => 
-                <p>{task.title}</p>
-            ) :
-            null
+          <div className='task-list'>
+            <Grid container justify='center' spacing={16}>
+                <Grid item xs={12} sm={8}>
+                <Paper rounded={false}>
+                    <ul>
+                    {this.props.lists[this.list_id] ? this.props.lists[this.list_id].map((task) => 
+                        <li className='task'>{task.title}</li>
+                    ) :
+                    null}
+                    </ul>
+                </Paper>
+                </Grid>
+            </Grid>
+          </div>
         );
     }
 }

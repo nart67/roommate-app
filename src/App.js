@@ -6,6 +6,8 @@ import SideNav from './components/SideNav/SideNav';
 import { connect } from 'react-redux';
 import { login } from './actions/auth';
 
+import CssBaseline from 'material-ui/CssBaseline';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -26,11 +28,13 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
-      <div className="App">
-        <SideNav/>
-      </div>
+      <React.Fragment>
+        <CssBaseline />
+        <div className="App">
+          <SideNav/>
+        </div>
+      </React.Fragment>
     );
   }
 }
