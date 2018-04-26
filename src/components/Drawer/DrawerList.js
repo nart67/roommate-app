@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { logout } from '../../actions/';
+import { logout } from '../../actions/auth';
 import Group from './components/Group';
 
 class DrawerList extends Component {
@@ -22,6 +22,7 @@ class DrawerList extends Component {
         fetch('/logout', {credentials: 'same-origin'})
         .then(response => {
             this.props.dispatch(logout());
+            this.setState({profile: {}});
             this.props.history.push('/');
         });
     }

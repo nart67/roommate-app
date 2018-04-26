@@ -4,7 +4,7 @@ import './App.css';
 
 import SideNav from './components/SideNav/SideNav';
 import { connect } from 'react-redux';
-import { login } from './actions/';
+import { login } from './actions/auth';
 
 class App extends Component {
   constructor(props) {
