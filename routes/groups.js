@@ -10,8 +10,8 @@ router.use('/:groupId/lists', require('./task-lists'));
 
 // Update group
 router.put('/:id', function(req, res) {
-    user_id = req.user.id;
-    id = req.params.id;
+    var user_id = req.user.id;
+    var id = req.params.id;
     
     if (!req.body.group) {
       missing(res);
@@ -26,8 +26,8 @@ router.put('/:id', function(req, res) {
   
   // Delete group
   router.delete('/:id', function(req, res) {
-    user_id = req.user.id;
-    id = req.params.id;
+    var user_id = req.user.id;
+    var id = req.params.id;
     Group.deleteGroup(id, user_id, function(err, group) {
       if (err || !group) res.status(404).json({message: "Not found"});
       else {

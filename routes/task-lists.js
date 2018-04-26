@@ -8,8 +8,8 @@ router.use('/:listId/tasks', require('./tasks'));
 
 // Update task list
 router.put('/:id', function(req, res) {
-    user_id = req.user.id;
-    id = req.params.id;
+    var user_id = req.user.id;
+    var id = req.params.id;
     
     if (!req.body.taskList) {
       missing(res);
@@ -24,8 +24,8 @@ router.put('/:id', function(req, res) {
   
   // Delete task list
   router.delete('/:id', function(req, res) {
-    user_id = req.user.id;
-    id = req.params.id;
+    var user_id = req.user.id;
+    var id = req.params.id;
     TaskList.deleteList(id, user_id, function(err, taskList) {
       if (err || !taskList) res.status(404).json({message: "Not found"});
       else {
