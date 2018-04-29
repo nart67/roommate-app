@@ -42,7 +42,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+
+// Use Mongo store for session information 
+app.use(require('./helper/session').middleware);
 
 // Initialize Passport and restore authentication state, if any, from the
 // session.
@@ -68,6 +70,10 @@ app.get('/logout', function(req, res){
 app.get('/login',
   function(req, res){
     res.render('login');
+  });
+
+  app.get('/socket', function(req, res){
+    res.sendFile(__dirname + '/public/socket.html');
   });
 
 // catch 404 and forward to error handler
