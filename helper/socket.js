@@ -2,58 +2,66 @@ var io;
 var sessionStore = require('./session').store;
 var passportSocketIo = require('passport.socketio');
 var User = require('../model/users').User;
+var Group = require('../model/groups').Group;
 
-const setio = function(_io) {
-  io = _io;
+const initialize = function(server) {
+  io = require('socket.io')(server);
+  createDefault();
 }
 
- const defaultConnect = function() {
-   if (!io) throw new Error('Set io before creating connections');
-  io.on('connection', function(socket){
-    console.log('a user connected');
-    socket.on('chat message', function(msg){
-      io.emit('chat message', msg);
-      console.log('message: ' + msg);
-    });
-  });
-}
-
-const namespaceConnect = function(namespace) {
+const createDefault = function() {
   if (!io) throw new Error('Set io before creating connections');
-  var nsp = io.of('/' + namespace);
-  nsp.use(passportSocketIo.authorize({
+  io.use(passportSocketIo.authorize({
     cookieParser: require('cookie-parser'),
     key: 'connect.sid',
     secret: 'keyboard cat',
     store: sessionStore,
-    success: onAuthorizeSuccess(namespace),
+    success: onAuthorizeSuccess,
     fail: onAuthorizeFail
   }))
   .on('connection', function(socket){
     console.log('a user connected');
     socket.on('chat message', function(msg){
-      nsp.emit('chat message', msg);
+      console.log(socket.request.user);
+      io.emit('chat message', msg);
       console.log('message: ' + msg);
+    });
+
+    socket.on('send', function(data) {
+      console.log('message: ' + data.message);
+      if (socket.rooms[data.room]) io.sockets.in(data.room).emit('message', data);
+      else socket.emit('chat message', 'Not in room');
+    });
+
+    socket.on('subscribe', function(room) { 
+      authenticateRoom(socket.request.user, room, socket);
+    });
+
+    socket.on('unsubscribe', function(room) {  
+      console.log('leaving room', room);
+      socket.leave(room); 
     });
   });
 }
 
-function onAuthorizeSuccess(namespace) {
-
-  return function(data, accept) {
-    console.log('successful connection to socket.io');
-
-    User.inGroup(data.user.id, namespace, function(err, inGroup) {
-      if (err) accept(err);
-      if (inGroup) accept();
-      accept(new Error('Permission denied'));
-    });
-  }
+const authenticateRoom = function(user, room, socket) {
+  User.inGroup(user.id, room, function(err, inGroup) {
+    if (err || !inGroup) socket.emit('connect_error', 'Not authorized');
+    else {
+      console.log('joining room', room);
+      socket.join(room);
+      socket.emit('chat message', 'joined ' + room);
+    }
+  });
 }
 
-function onAuthorizeFail(data, message, error, accept){
-  if(error)
-    throw new Error(message);
+const onAuthorizeSuccess = function(data, accept) {
+  console.log('successful connection to socket.io');
+
+  accept();
+}
+
+const onAuthorizeFail = function(data, message, error, accept){
   console.log('failed connection to socket.io:', message);
 
   if(error)
@@ -61,7 +69,5 @@ function onAuthorizeFail(data, message, error, accept){
 }
 
 exports = module.exports = {
-  setio,
-  defaultConnect,
-  namespaceConnect
+  initialize
 }
