@@ -49,6 +49,18 @@ userSchema.statics.profile = function profile(user_id, callback) {
   );
 }
 
+userSchema.statics.inGroup = function inGroup(user_id, group_id, callback) {
+  this.count({ id: user_id, groups: group_id }, function(err, count) {
+      if (err) {
+        callback(err);
+        return;
+      }
+
+      callback(null, (count > 0));
+    }
+  );
+}
+
 var User = mongoose.model('User', userSchema);
 
 module.exports = {

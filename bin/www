@@ -19,7 +19,23 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var https = require('https');
+var fs = require('fs');
+var privateKey  = fs.readFileSync('./privatekey.key', 'utf8');
+var certificate = fs.readFileSync('./certificate.crt', 'utf8');
+
+var credentials = {key: privateKey, cert: certificate};
+var server = https.createServer(credentials, app);
+
+/**
+ * Bind socket.io.
+ */
+
+var io = require('socket.io')(server);
+var socket = require('../helper/socket');
+socket.setio(io);
+// socket.defaultConnect();
+socket.namespaceConnect('test');
 
 /**
  * Listen on provided port, on all network interfaces.
