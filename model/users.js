@@ -6,7 +6,7 @@ var userSchema = new Schema({
     facebookId: { type: String, unique: true},
     email: String,
     displayName: String, 
-    groups: [{type: Schema.Types.ObjectId, ref: 'Group'}]
+    groups: [{type: Schema.Types.ObjectId, ref: 'Group', index: true}]
 });
 
 userSchema.method('addGroup', function(group_id) {
@@ -50,7 +50,7 @@ userSchema.statics.profile = function profile(user_id, callback) {
 }
 
 userSchema.statics.inGroup = function inGroup(user_id, group_id, callback) {
-  this.count({ id: user_id, groups: group_id }, function(err, count) {
+  this.count({ _id: user_id, groups: group_id }, function(err, count) {
       if (err) {
         callback(err);
         return;
