@@ -7,6 +7,8 @@ var groupSchema = new Schema({
     lists: [{type: Schema.Types.ObjectId, ref: 'TaskList'}]
 });
 
+require('./idVirtual')(groupSchema);
+
 groupSchema.method('addList', function(list_id) {
     this.update({ $push: {lists: list_id}}, {}, () => {});
 });

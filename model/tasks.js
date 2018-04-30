@@ -9,6 +9,8 @@ var taskSchema = new Schema({
     date_due: Date
 });
 
+require('./idVirtual')(taskSchema);
+
 taskSchema.statics.updateTask = function(id, user_id, newTask, callback) {
     this.findById(id, function(err, task) {
         if (err) {

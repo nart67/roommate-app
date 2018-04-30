@@ -9,6 +9,8 @@ var userSchema = new Schema({
     groups: [{type: Schema.Types.ObjectId, ref: 'Group', index: true}]
 });
 
+require('./idVirtual')(userSchema);
+
 userSchema.method('addGroup', function(group_id) {
   this.update({ $push: {groups: group_id}}, {}, () => {});
 });

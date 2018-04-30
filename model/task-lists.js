@@ -6,6 +6,8 @@ var taskListSchema = new Schema({
     group: {type: Schema.Types.ObjectId, ref: 'Group'}
 });
 
+require('./idVirtual')(taskListSchema);
+
 taskListSchema.index({ displayName: 1, group: 1 }, { unique: true });
 
 taskListSchema.statics.updateList = function(id, user_id, newTaskList, callback) {
