@@ -1,14 +1,29 @@
-
 import React, { Component } from 'react'
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
 import Group from './components/Group';
+import { createUser, createGroup, createList } from '../../actions/orm';
+
+import { normalize, schema } from 'normalizr';
+
+// Define your article
+const list = new schema.Entity('lists');
+
+// Define your comments schema
+const group = new schema.Entity('groups', {
+  lists: [list]
+});
+
+// Define a users schema
+const user = new schema.Entity('users', {
+  groups: [group]
+});
 
 class DrawerList extends Component {
     state = {
-        profile: {}
+        user
     }
 
     constructor(props) {
@@ -35,13 +50,33 @@ class DrawerList extends Component {
               return response.json();
             }
         }).then(data => {
-            data && this.setState({profile: data.profile});
+            if (!data) return;
+            const normalizedData = normalize(data.profile, user);
+            this.updateData(normalizedData);
         });
+    }
+
+    updateData(normalizedData) {
+        this.state.user = normalizedData.result;
+        const {users, groups, lists} = normalizedData.entities;
+        for (const key in users) {
+            if (users.hasOwnProperty(key))
+                this.props.dispatch(createUser(users[key]));
+        }
+        for (const key in groups) {
+            if (groups.hasOwnProperty(key))
+                this.props.dispatch(createGroup(groups[key]));
+        }
+        for (const key in lists) {
+            if (lists.hasOwnProperty(key))
+                this.props.dispatch(createList(lists[key]));
+        }
     }
 
     render() {
         return (
           <List component="nav">
+            <div>
             { this.props.authenticated ||
             <Link to='/login'>
                 <ListItem button>
@@ -51,8 +86,8 @@ class DrawerList extends Component {
             }
 
             {
-                this.state.profile.groups && this.state.profile.groups.map((group) => 
-                    <Group group={group} />
+                this.props.orm.Group.items && this.props.orm.Group.items.map((group) => 
+                    <Group group={group} key={group} />
                 )
             }
 
@@ -61,13 +96,15 @@ class DrawerList extends Component {
                 <ListItemText inset primary="Log Out" />
             </ListItem>
             }
+            </div>
           </List>
         )
     }
 }
 
 const mapStateToProps = state => ({
-    authenticated: state.auth
+    authenticated: state.auth,
+    orm: state.orm
   });
 
 export default withRouter(connect(mapStateToProps)(DrawerList));
