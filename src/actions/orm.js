@@ -3,6 +3,11 @@ export const createList = (payload) => ({
     payload
 })
 
+export const createTask = (payload) => ({
+    type: 'CREATE_TASK',
+    payload
+})
+
 export const createUser = (payload) => ({
     type: 'CREATE_USER',
     payload
