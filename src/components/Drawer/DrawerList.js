@@ -37,7 +37,6 @@ class DrawerList extends Component {
         fetch('/logout', {credentials: 'same-origin'})
         .then(response => {
             this.props.dispatch(logout());
-            this.setState({profile: {}});
             this.props.history.push('/');
         });
     }
@@ -57,7 +56,7 @@ class DrawerList extends Component {
     }
 
     updateData(normalizedData) {
-        this.state.user = normalizedData.result;
+        this.setState({user: normalizedData.result});
         const {users, groups, lists} = normalizedData.entities;
         for (const key in users) {
             if (users.hasOwnProperty(key))
