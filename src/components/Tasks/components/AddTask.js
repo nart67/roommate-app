@@ -3,7 +3,6 @@ import Grid from 'material-ui/Grid';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
-import './AddTask.css';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
@@ -26,13 +25,12 @@ const styles = theme => ({
   
 
 class AddTask extends Component {
+    state = {
+      value: ''
+    }
 
     constructor(props) {
       super(props);
-
-      this.state = {
-        value: '',
-      };
     }
   
     handleChange = (event) => {
@@ -42,9 +40,10 @@ class AddTask extends Component {
     };
 
     submit = () => {
+      console.log(this.props.group)
         var data = new URLSearchParams();
         data.append('task', JSON.stringify({title: this.state.value}));
-        fetch(`/lists/${this.props.list}/tasks`, {
+        fetch(`/groups/${this.props.group}/lists/${this.props.list}/tasks`, {
           body: data,
           credentials: 'same-origin',
           method: 'POST',

@@ -6,17 +6,26 @@ import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 import './ViewTaskList.css';
 import AddTask from './components/AddTask';
-import socket from '../../socket/socket'
+import socket from '../../socket/socket';
+import Task from './components/Task';
 
 class ViewTaskList extends Component {    
     constructor(props) {
         super(props);
         this.list_id = props.match.params.id;
-        this.getTasks = this.getTasks.bind(this);
         props.lists[this.list_id] || this.getTasks();
     }
 
-    getTasks() {
+    componentWillReceiveProps(nextProps){
+        const list = this.props.List.itemsById[this.list_id];
+        if (list) {
+            this.group_id = list.group;
+            this.connectSocket();
+            this.componentWillReceiveProps = null;
+        }
+     }
+     
+    getTasks = () => {
         fetch(`/lists/${this.list_id}/tasks`, {credentials: 'same-origin'})
         .then(response => {
             const contentType = response.headers.get("content-type");
@@ -30,19 +39,17 @@ class ViewTaskList extends Component {
                     const task = data.tasks[i];
                     this.props.dispatch(createTask(task));
                 }
-                this.connectSocket();
             }
         });
     }
 
     connectSocket = () => {
         const self = this;
-        socket.emit('subscribe', '5add0c6967a0e81a6c65e9ee');
+        socket.emit('subscribe', this.group_id);
         socket.on('task', function(data) {
             console.log(data);
             switch (data.type) {
             case 'ADD':
-                console.log('test');
                 self.props.dispatch(createTask(data.task));
                 break;
             default:
@@ -55,9 +62,11 @@ class ViewTaskList extends Component {
         return (
           <div className='task-list'>
             <Grid container justify='center' spacing={16}>
+                {this.group_id && 
                 <Grid item xs={12} sm={8}>
-                    <AddTask list={this.list_id} />
+                    <AddTask list={this.list_id} group={this.group_id} />
                 </Grid>
+                }
                 <Grid item xs={12} sm={8}>
                 <Paper rounded='false'>
                     <ul>
@@ -67,7 +76,7 @@ class ViewTaskList extends Component {
                     ).filter((task) =>
                         task.task_list === this.list_id
                     ).map((task) =>
-                        <li className='task' key={task.id}>{task.title}</li>
+                        <Task key={task.id} task={task} />
                     ) :
                     null}
                     </ul>
@@ -81,6 +90,7 @@ class ViewTaskList extends Component {
 
 const mapStateToProps = state => ({
     lists: state.lists,
+    List: state.orm.TaskList,
     Task: state.orm.Task
   });
 
