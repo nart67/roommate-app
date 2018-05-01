@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router({mergeParams: true});
 var Task = require('../model/tasks').Task;
+var emit = require('../helper/socket').emit;
 
 // Update task
 router.put('/:id', function(req, res) {
@@ -31,11 +32,15 @@ router.delete('/:id', function(req, res) {
 // Create task
 router.post('/', function(req, res) {
     var newTask = JSON.parse(req.body.task);
+    var groupId = req.params.groupId;
     newTask.task_list = req.params.listId;
     newTask = new Task(newTask);
     newTask.save(function(err) {
       if (err) res.status(409).json({message: "Add failed"});
-      else res.status(201).json({message: "Add successful", task: newTask});
+      else {
+        res.status(201).json({message: "Add successful", task: newTask});
+        emit(groupId, 'task', {type: 'ADD', task: newTask});
+      }
     });
 });
 

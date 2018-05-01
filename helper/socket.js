@@ -68,6 +68,11 @@ const onAuthorizeFail = function(data, message, error, accept){
     accept(new Error(message));
 }
 
+const emit = function(room, event, data) {
+  io.sockets.in(room).emit(event, data);
+}
+
 exports = module.exports = {
-  initialize
+  initialize,
+  emit
 }
