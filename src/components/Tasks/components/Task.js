@@ -16,20 +16,49 @@ const styles = theme => ({
     },
   });
 
-const Task = (props) => {
-    const task = props.task;
-    const { classes } = props;
-    return (
-    <li>
-        <div className={classes.root}>
-        <Checkbox />
-        {task.title}
-        <IconButton className={classes.button} aria-label="Delete">
-            <DeleteIcon />
-        </IconButton>
-        </div>
-    </li>
-)};
+class Task extends Component {
+    constructor(props) {
+        super(props);
+    }
+    
+    delete = () => {
+        fetch(`/groups/${this.props.group}/lists/${this.props.list}
+            /tasks/${this.props.task.id}`, {
+          credentials: 'same-origin',
+          method: 'DELETE',
+          headers: new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded'
+          })
+        })
+        .then(response => {
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+              return response.json();
+            }
+        }).then(data => {
+            console.log(data);
+        });
+    }
+
+    render() {
+        const task = this.props.task;
+        const { classes } = this.props;
+        return (
+        <li>
+            <div className={classes.root}>
+            <Checkbox />
+            {task.title}
+            <IconButton 
+              className={classes.button} 
+              aria-label="Delete"
+              onClick={this.delete}
+            >
+                <DeleteIcon />
+            </IconButton>
+            </div>
+        </li>
+    )};
+}
 
 Task.propTypes = {
     classes: PropTypes.object.isRequired,

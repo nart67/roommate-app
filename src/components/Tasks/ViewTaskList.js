@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { createTask } from '../../actions/orm';
+import { createTask, removeTask } from '../../actions/orm';
 import { addList } from '../../actions/lists';
 import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
@@ -52,6 +52,9 @@ class ViewTaskList extends Component {
             case 'ADD':
                 self.props.dispatch(createTask(data.task));
                 break;
+            case 'DELETE':
+                self.props.dispatch(removeTask(data.task));
+                break;
             default:
                 break;
             }
@@ -61,12 +64,11 @@ class ViewTaskList extends Component {
     render() {
         return (
           <div className='task-list'>
+          {this.group_id &&
             <Grid container justify='center' spacing={16}>
-                {this.group_id && 
                 <Grid item xs={12} sm={8}>
                     <AddTask list={this.list_id} group={this.group_id} />
                 </Grid>
-                }
                 <Grid item xs={12} sm={8}>
                 <Paper rounded='false'>
                     <ul>
@@ -76,13 +78,15 @@ class ViewTaskList extends Component {
                     ).filter((task) =>
                         task.task_list === this.list_id
                     ).map((task) =>
-                        <Task key={task.id} task={task} />
+                        <Task key={task.id} task={task}
+                        list={this.list_id} group={this.group_id} />
                     ) :
                     null}
                     </ul>
                 </Paper>
                 </Grid>
             </Grid>
+          }
           </div>
         );
     }
