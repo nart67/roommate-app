@@ -4,9 +4,10 @@ var Schema = mongoose.Schema;
 var taskSchema = new Schema({
     title: {type: String, required: true},
     task_list: {type: Schema.Types.ObjectId, ref: 'TaskList', required: true, index: true},
+    completed: {type: Boolean, default: false, index: true},
     description: String,
-    date_added: {type: Date, default: Date.now},
-    date_due: Date
+    date_added: {type: Date, default: Date.now, index: true},
+    date_due: {type: Date, index: true}
 });
 
 require('./idVirtual')(taskSchema);
@@ -22,10 +23,11 @@ taskSchema.statics.updateTask = function(id, user_id, newTask, callback) {
             callback(new Error("not found"));
             return;
         }
+        Object.assign(task, newTask);
 
-        task.update(newTask, function(err) {
+        task.save(function(err) {
             if (err) callback(err);
-            else callback(null);
+            else callback(null, task);
         });
     });
 }

@@ -7,15 +7,19 @@ var emit = require('../helper/socket').emit;
 router.put('/:id', function(req, res) {
     var user_id = req.user.id;
     var id = req.params.id;
+    var groupId = req.params.groupId;
     
     if (!req.body.task) {
       missing(res);
       return;
     }
     var newTask = JSON.parse(req.body.task);
-    Task.updateTask(id, user_id, newTask, function(err) {
+    Task.updateTask(id, user_id, newTask, function(err, raw) {
       if (err) res.status(404).json({message: "Not found"});
-      else res.status(200).json({message: "Update successful"});
+      else {
+        res.status(200).json({message: "Update successful", task: raw});
+        emit(groupId, 'task', {type: 'UPDATE', task: raw});
+      }
     })
 });
 
@@ -24,6 +28,7 @@ router.delete('/:id', function(req, res) {
     var user_id = req.user.id;
     var id = req.params.id;
     var groupId = req.params.groupId;
+
     Task.deleteTask(id, user_id, function(err, task) {
       if (err || !task) res.status(404).json({message: "Not found"});
       else {
