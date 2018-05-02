@@ -40,7 +40,6 @@ class AddTask extends Component {
     };
 
     submit = () => {
-      console.log(this.props.group)
         var data = new URLSearchParams();
         data.append('task', JSON.stringify({title: this.state.value}));
         fetch(`/groups/${this.props.group}/lists/${this.props.list}/tasks`, {
