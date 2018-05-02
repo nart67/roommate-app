@@ -5,6 +5,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
+import { connect } from 'react-redux'
 
 const styles = theme => ({
     root: {
@@ -40,13 +41,41 @@ class Task extends Component {
         });
     }
 
+    onCheck = (event) => {
+        const task = Object.assign({}, this.props.task);
+        task.completed = event.target.checked;
+        const data = new URLSearchParams();
+        data.append('task', JSON.stringify(task));
+
+        fetch(`/groups/${this.props.group}/lists/${this.props.list}` +
+            `/tasks/${this.props.task.id}`, {
+          body: data,
+          credentials: 'same-origin',
+          method: 'PUT',
+          headers: new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded'
+          })
+        })
+        .then(response => {
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+            return response.json();
+            }
+        }).then(data => {
+            console.log(data);
+        });
+    }
+
     render() {
         const task = this.props.task;
         const { classes } = this.props;
         return (
         <li>
             <div className={classes.root}>
-            <Checkbox />
+            <Checkbox
+              checked={task.completed}
+              onChange={this.onCheck}
+            />
             {task.title}
             <IconButton 
               className={classes.button} 
@@ -64,5 +93,9 @@ Task.propTypes = {
     classes: PropTypes.object.isRequired,
 };
   
-export default withStyles(styles)(Task);
+const mapStateToProps = state => ({
+    Task: state.orm.Task
+  });
+
+export default withStyles(styles)(connect(mapStateToProps)(Task));
   

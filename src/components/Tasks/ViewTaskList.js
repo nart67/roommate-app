@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { createTask, removeTask } from '../../actions/orm';
+import { createTask, removeTask, updateTask } from '../../actions/orm';
 import { addList } from '../../actions/lists';
 import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
@@ -54,6 +54,9 @@ class ViewTaskList extends Component {
                 break;
             case 'DELETE':
                 self.props.dispatch(removeTask(data.task));
+                break;
+            case 'UPDATE':
+                self.props.dispatch(updateTask(data.task));
                 break;
             default:
                 break;

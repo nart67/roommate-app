@@ -15,6 +15,11 @@ export const removeTask = (payload) => ({
     payload
 })
 
+export const updateTask = (payload) => ({
+    type: 'UPDATE_TASK',
+    payload
+})
+
 // User actions
 export const createUser = (payload) => ({
     type: 'CREATE_USER',
