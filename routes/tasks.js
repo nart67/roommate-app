@@ -23,9 +23,13 @@ router.put('/:id', function(req, res) {
 router.delete('/:id', function(req, res) {
     var user_id = req.user.id;
     var id = req.params.id;
+    var groupId = req.params.groupId;
     Task.deleteTask(id, user_id, function(err, task) {
       if (err || !task) res.status(404).json({message: "Not found"});
-      else res.status(200).json({message: "Delete successful"});
+      else {
+        res.status(200).json({message: "Delete successful"});
+        emit(groupId, 'task', {type: 'DELETE', task: task});
+      }
     })
 });
   
