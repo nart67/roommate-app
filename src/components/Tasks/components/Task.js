@@ -5,7 +5,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
 const styles = theme => ({
     root: {
@@ -23,8 +23,8 @@ class Task extends Component {
     }
     
     delete = () => {
-        fetch(`/groups/${this.props.group}/lists/${this.props.list}
-            /tasks/${this.props.task.id}`, {
+        fetch(`/groups/${this.props.group}/lists/${this.props.list}` +
+            `/tasks/${this.props.task}`, {
           credentials: 'same-origin',
           method: 'DELETE',
           headers: new Headers({
@@ -42,13 +42,13 @@ class Task extends Component {
     }
 
     onCheck = (event) => {
-        const task = Object.assign({}, this.props.task);
+        const task = Object.assign({}, this.props.Task.itemsById[this.props.task]);
         task.completed = event.target.checked;
         const data = new URLSearchParams();
         data.append('task', JSON.stringify(task));
 
         fetch(`/groups/${this.props.group}/lists/${this.props.list}` +
-            `/tasks/${this.props.task.id}`, {
+            `/tasks/${this.props.task}`, {
           body: data,
           credentials: 'same-origin',
           method: 'PUT',
@@ -67,7 +67,7 @@ class Task extends Component {
     }
 
     render() {
-        const task = this.props.task;
+        const task = this.props.Task.itemsById[this.props.task];
         const { classes } = this.props;
         return (
         <li>

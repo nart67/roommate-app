@@ -81,7 +81,7 @@ class ViewTaskList extends Component {
                     ).filter((task) =>
                         task.task_list === this.list_id
                     ).map((task) =>
-                        <Task key={task.id} task={task}
+                        <Task key={task.id} task={task.id}
                         list={this.list_id} group={this.group_id} />
                     ) :
                     null}
