@@ -5,9 +5,9 @@ import { addList } from '../../actions/lists';
 import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 import './ViewTaskList.css';
-import AddTask from './components/AddTask';
+import AddTask from '../Task/AddTask';
 import socket from '../../socket/socket';
-import Task from './components/Task';
+import Task from '../Task/Task';
 
 class ViewTaskList extends Component {    
     constructor(props) {
