@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 
 const styles = theme => ({
   nested: {
@@ -16,7 +17,10 @@ const TaskList = (props) => {
   return (
   <Link to={`/lists/${list.id}`}>
     <ListItem button className={props.classes.nested}>
-        <ListItemText inset primary={list.displayName} />
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText inset primary={list.displayName} />
     </ListItem>
   </Link>
 )}

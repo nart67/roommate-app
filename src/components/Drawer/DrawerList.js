@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
 import Group from './components/Group';
 import { createUser, createGroup, createList } from '../../actions/orm';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import { withStyles } from 'material-ui/styles';
 
 import { normalize, schema } from 'normalizr';
 
@@ -89,6 +91,14 @@ class DrawerList extends Component {
                     <Group group={group} key={group} />
                 )
             }
+            <Link to='/'>
+                <ListItem button>
+                    <ListItemIcon>
+                        <GroupAddIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Add Group" />
+                </ListItem>
+            </Link>
 
             { !this.props.authenticated ||
             <ListItem button onClick={this.logout}>
