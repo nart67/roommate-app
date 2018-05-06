@@ -1,10 +1,27 @@
 import React, { Component } from 'react'
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import List, { ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction } from 'material-ui/List';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from 'material-ui/transitions/Collapse';
 import TaskList from './TaskList';
 import { connect } from 'react-redux';
+import { Link, withRouter } from 'react-router-dom';
+import { withStyles } from 'material-ui/styles';
+import GroupMenu from './GroupMenu';
+import GroupIcon from '@material-ui/icons/Group'
+
+
+const styles = theme => ({
+  groupItem: {
+    paddingLeft: theme.spacing.unit
+  },
+  icon: {
+    marginLeft: theme.spacing.unit
+  },
+  nested: {
+    paddingLeft: theme.spacing.unit * 4,
+  },
+});
 
 class Group extends Component {
     state = { open: false };
@@ -29,9 +46,13 @@ class Group extends Component {
 
         return (
           <div>
-          <ListItem button onClick={this.handleClick}>
-            <ListItemText inset primary={ this.group.displayName } />
+          <ListItem className={classes.groupItem} button onClick={this.handleClick}>
             {this.state.open ? <ExpandLess /> : <ExpandMore />}
+            <GroupIcon className={classes.icon} />
+            <ListItemText primary={ this.group.displayName } />
+            <ListItemSecondaryAction>
+              <GroupMenu />
+            </ListItemSecondaryAction>
           </ListItem>
           <Collapse in={this.state.open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
@@ -55,4 +76,4 @@ const mapStateToProps = state => ({
   GroupLists: state.orm.GroupLists
 });
 
-  export default connect(mapStateToProps)(Group);
+export default withStyles(styles)(connect(mapStateToProps)(Group));
