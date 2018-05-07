@@ -31,7 +31,7 @@ taskListSchema.statics.updateList = function(id, user_id, newTaskList, callback)
 
         taskList.save(function(err) {
             if (err) callback(err);
-            else callback(null);
+            else callback(null, taskList);
         });
     })
 }
