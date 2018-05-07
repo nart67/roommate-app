@@ -1,6 +1,7 @@
 const io = require('socket.io-client');
 
 const socket = io();
+socket.lists = {};
 
 socket.on('reconnecting', (attemptNumber) => {
     console.log('reconnecting: ' + attemptNumber);
@@ -15,7 +16,7 @@ socket.on( 'connect_error', function (error) {
     console.log( 'connection error: ' + error);
 });
 socket.on('connect', function() {
-    socket.emit('subscribe', 'roomTwo');
+    console.log( 'connected to server' );
 })
 
 export default socket;
