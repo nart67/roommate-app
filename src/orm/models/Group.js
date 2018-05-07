@@ -13,6 +13,12 @@ export class Group extends Model {
         case 'REMOVE_GROUP':
             Group.withId(action.payload.id).delete();
             break;
+        case 'ADD_LIST_TO_GROUP':
+            Group.withId(action.payload.group).lists.add(action.payload.id);
+            break;
+        case 'REMOVE_LIST_FROM_GROUP':
+            Group.withId(action.payload.group).lists.remove(action.payload.id);
+            break;
         default:
             break;
         }
