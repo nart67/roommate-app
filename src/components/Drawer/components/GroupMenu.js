@@ -3,6 +3,8 @@ import IconButton from 'material-ui/IconButton';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import { ListItemSecondaryAction } from 'material-ui/List'
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
   
 class GroupMenu extends Component {
     state = {
@@ -35,7 +37,9 @@ class GroupMenu extends Component {
                 open={Boolean(anchorEl)}
                 onClose={this.handleClose}
             >
-                <MenuItem onClick={this.handleClose}>Add List</MenuItem>
+                <Link to={`/groups/${this.props.group}/lists`}>
+                  <MenuItem onClick={this.handleClose}>Add List</MenuItem>
+                </Link>
                 <MenuItem onClick={this.handleClose}>Add Channel</MenuItem>
                 <MenuItem onClick={this.handleClose}>Edit Group</MenuItem>
             </Menu>
@@ -43,5 +47,9 @@ class GroupMenu extends Component {
         )
     }
 }
+
+GroupMenu.propTypes = {
+  group: PropTypes.string,
+};
 
 export default GroupMenu;
