@@ -9,6 +9,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { withStyles } from 'material-ui/styles';
 import GroupMenu from './GroupMenu';
 import GroupIcon from '@material-ui/icons/Group'
+import PropTypes from 'prop-types';
 
 
 const styles = theme => ({
@@ -51,7 +52,7 @@ class Group extends Component {
             <GroupIcon className={classes.icon} />
             <ListItemText primary={ this.group.displayName } />
             <ListItemSecondaryAction>
-              <GroupMenu />
+              <GroupMenu group={this.props.group} />
             </ListItemSecondaryAction>
           </ListItem>
           <Collapse in={this.state.open} timeout="auto" unmountOnExit>
@@ -70,6 +71,9 @@ class Group extends Component {
     }
 } 
 
+Group.propTypes = {
+  group: PropTypes.string,
+};
 
 const mapStateToProps = state => ({
   Group: state.orm.Group,
