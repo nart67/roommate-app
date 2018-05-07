@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { createTask, removeTask, updateTask } from '../../actions/orm';
+import { createTask } from '../../actions/orm';
 import { addList } from '../../actions/lists';
 import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
@@ -14,14 +14,20 @@ class ViewTaskList extends Component {
         super(props);
         this.list_id = props.match.params.id;
         props.lists[this.list_id] || this.getTasks();
-    }
-
-    componentWillReceiveProps(nextProps){
         const list = this.props.List.itemsById[this.list_id];
         if (list) {
             this.group_id = list.group;
-            this.connectSocket();
-            this.componentWillReceiveProps = null;
+        }
+    }
+
+    componentWillReceiveProps(nextProps){
+        if (nextProps.match.params.id != this.list_id) {
+            this.list_id = nextProps.match.params.id;
+            this.props.lists[this.list_id] || this.getTasks();
+        }
+        const list = this.props.List.itemsById[this.list_id];
+        if (list) {
+            this.group_id = list.group;
         }
      }
      
@@ -35,31 +41,11 @@ class ViewTaskList extends Component {
         }).then(data => {
             if (data) {
                 this.props.dispatch(addList(this.list_id));
+                socket.lists[this.list_id] = true;
                 for (let i = 0; i < data.tasks.length; i++) {
                     const task = data.tasks[i];
                     this.props.dispatch(createTask(task));
                 }
-            }
-        });
-    }
-
-    connectSocket = () => {
-        const self = this;
-        socket.emit('subscribe', this.group_id);
-        socket.on('task', function(data) {
-            console.log(data);
-            switch (data.type) {
-            case 'ADD':
-                self.props.dispatch(createTask(data.task));
-                break;
-            case 'DELETE':
-                self.props.dispatch(removeTask(data.task));
-                break;
-            case 'UPDATE':
-                self.props.dispatch(updateTask(data.task));
-                break;
-            default:
-                break;
             }
         });
     }

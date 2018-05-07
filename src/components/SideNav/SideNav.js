@@ -13,6 +13,12 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AppRouter from '../../routers/AppRouter';
 import DrawerList from '../Drawer/DrawerList';
 import { BrowserRouter, Route, Switch, Link, NavLink } from 'react-router-dom';
+import { createUser, GroupActions, ListActions, 
+  createTask, removeTask, updateTask } from '../../actions/orm';
+import { connect } from 'react-redux';
+import socket from '../../socket/socket';
+
+import { normalize, schema } from 'normalizr';
 
 const drawerWidth = 240;
 
@@ -51,14 +57,108 @@ const styles = theme => ({
   },
 });
 
+// Define your article
+const list = new schema.Entity('lists');
+
+// Define your comments schema
+const group = new schema.Entity('groups', {
+  lists: [list]
+});
+
+// Define a users schema
+const user = new schema.Entity('users', {
+  groups: [group]
+});
+
 class SideNav extends React.Component {
   state = {
     mobileOpen: false,
   };
 
+  constructor(props) {
+    super(props);
+    this.getGroups();
+  }
+
   handleDrawerToggle = () => {
     this.setState({ mobileOpen: !this.state.mobileOpen });
   };
+
+  getGroups() {
+    this.fetched = true;
+    fetch('/users', {credentials: 'same-origin'})
+    .then(response => {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+          return response.json();
+        }
+    }).then(data => {
+        if (!data) return;
+        const normalizedData = normalize(data.profile, user);
+        this.updateData(normalizedData);
+    });
+  }
+
+  updateData(normalizedData) {
+    this.setState((prevState, props) => {user: normalizedData.result});
+    const {users, groups, lists} = normalizedData.entities;
+    for (const key in users) {
+        if (users.hasOwnProperty(key))
+            this.props.dispatch(createUser(users[key]));
+    }
+    for (const key in groups) {
+        if (groups.hasOwnProperty(key)) {
+            this.props.dispatch(GroupActions.createGroup(groups[key]));
+            this.subscribeSocket(groups[key].id);
+        }
+    }
+    for (const key in lists) {
+        if (lists.hasOwnProperty(key))
+            this.props.dispatch(ListActions.createList(lists[key]));
+    }
+  }
+
+  subscribeSocket(group) {
+    socket.emit('subscribe', group);
+    const self = this;
+    socket.on('list', function(data) {
+        console.log(data);
+        switch (data.type) {
+        case 'ADD':
+            self.props.dispatch(ListActions.createList(data.list));
+            self.props.dispatch(GroupActions.addList(data.list));
+            break;
+        case 'DELETE':
+            self.props.dispatch(ListActions.removeList(data.list));
+            self.props.dispatch(GroupActions.removeList(data.list));
+            break;
+        case 'UPDATE':
+            self.props.dispatch(ListActions.updateList(data.list));
+            break;
+        default:
+            break;
+        }
+    });
+    socket.on('task', function(data) {
+      console.log(data);
+      if (!socket.lists[data.task.task_list]) return;
+      switch (data.type) {
+      case 'ADD':
+          self.props.dispatch(createTask(data.task));
+          break;
+      case 'DELETE':
+          self.props.dispatch(removeTask(data.task));
+          break;
+      case 'UPDATE':
+          self.props.dispatch(updateTask(data.task));
+          break;
+      default:
+          break;
+      }
+    });
+  }
+
+
 
   render() {
     const { classes, theme } = this.props;
@@ -131,4 +231,4 @@ SideNav.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(SideNav);
+export default withStyles(styles, { withTheme: true })(connect()(SideNav));
