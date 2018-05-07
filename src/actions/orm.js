@@ -1,8 +1,18 @@
 // List actions
-export const createList = (payload) => ({
-    type: 'CREATE_LIST',
-    payload
-})
+export const ListActions = {
+    createList: (payload) => ({
+        type: 'CREATE_LIST',
+        payload
+    }),
+    removeList: (payload) => ({
+        type: 'REMOVE_LIST',
+        payload
+    }),
+    updateList: (payload) => ({
+        type: 'UPDATE_LIST',
+        payload
+    })
+}
 
 // Task actions
 export const createTask = (payload) => ({
@@ -27,7 +37,19 @@ export const createUser = (payload) => ({
 })
 
 // Group actions
-export const createGroup = (payload) => ({
-    type: 'CREATE_GROUP',
-    payload
-})
+export const GroupActions = {
+    createGroup: (payload) => ({
+        type: 'CREATE_GROUP',
+        payload
+    }),
+    
+    addList: (payload) => ({
+        type: 'ADD_LIST_TO_GROUP',
+        payload
+    }),
+    
+    removeList: (payload) => ({
+        type: 'REMOVE_LIST_FROM_GROUP',
+        payload
+    })
+}
