@@ -42,7 +42,7 @@ class DrawerList extends Component {
                     <Group group={group} key={group} />
                 )
             }
-            <Link to='/'>
+            <Link to='/groups/add'>
                 <ListItem button>
                     <ListItemIcon>
                         <GroupAddIcon />
