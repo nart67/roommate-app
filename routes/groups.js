@@ -7,6 +7,7 @@ router.use(require('connect-ensure-login').ensureLoggedIn());
 
 // Task list subroute
 router.use('/:groupId/lists', require('./task-lists'));
+router.use('/:groupId/channels', require('./channels'));
 
 // Update group
 router.put('/:id', function(req, res) {
@@ -41,9 +42,10 @@ router.put('/:id', function(req, res) {
   
   // Create group
   router.post('/', function(req, res) {
-    var newGroup = new Group({
-      owner: req.user.id,
-      displayName: req.body.displayName,
+    var newGroup = JSON.parse(req.body.group);
+    newGroup = new Group({
+      ...newGroup,
+      owner: req.user.id
     });
     newGroup.save(function(err) {
       if (err) res.status(409).json({message: "Add failed"});
