@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addMessage } from '../../../actions/messages'
+import socket from '../../../socket/socket';
 
 const AddMessage = (props) => {
   let input
@@ -11,7 +12,7 @@ const AddMessage = (props) => {
       <input
         onKeyPress={(e) => {
         if (e.key === 'Enter') {
-          props.dispatch(input.value, 'Me')
+          props.dispatch(input.value, 'Me', props.room)
           input.value = ''
         }
       }}
@@ -29,7 +30,12 @@ AddMessage.propTypes = {
 }
 
 const mapDispatchToProps = dispatch => ({
-  dispatch: (message, user) => {
+  dispatch: (message, user, room) => {
+    socket.emit('send', {
+      message,
+      user,
+      room
+    })
     dispatch(addMessage(message, user))
   }
 })

@@ -19,6 +19,7 @@ import { connect } from 'react-redux';
 import socket from '../../socket/socket';
 
 import { normalize, schema } from 'normalizr';
+import { messageReceived } from '../../actions/messages';
 
 const drawerWidth = 240;
 
@@ -181,6 +182,11 @@ class SideNav extends React.Component {
           break;
       }
     });
+    socket.on('chat message', function(data) {
+      const { message, user } = data;
+      console.log(data);
+      self.props.dispatch(messageReceived(message, user));
+    })
   }
 
 

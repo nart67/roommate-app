@@ -4,13 +4,15 @@
     margin: 0;
   }
   #container {
-
+    height: 100%;
+    max-width: 1200px;
+    margin: auto;
   }
   #main {
       grid-area: main;
   }
   #new-message {
-      position: fixed;
+      position: relative;
       bottom: 0;
       width: 100%;
       padding: 5px;
@@ -18,9 +20,11 @@
       border-top: 1px solid #3f3f3f;
   }
   #messages-list {
+      text-align: left;
       padding: 5px 0 0 5px;
       overflow-y: auto;
       height: 1000px;
+      overflow-wrap: break-word;
   }
   #sidebar {
       grid-area: sidebar;
@@ -37,7 +41,7 @@
   }
   
   #new-message input {
-      font-family: "Press Start 2P";
+      font-size: 18px;
       width: 100%;
       height: 100%;
       margin: 0;
