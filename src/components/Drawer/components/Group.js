@@ -10,6 +10,7 @@ import { withStyles } from 'material-ui/styles';
 import GroupMenu from './GroupMenu';
 import GroupIcon from '@material-ui/icons/Group'
 import PropTypes from 'prop-types';
+import Channel from './Channel';
 
 
 const styles = theme => ({
@@ -42,6 +43,12 @@ class Group extends Component {
       return false;
     }
 
+    channelIsInGroup(id) {
+      const reference = this.props.GroupChannels.itemsById[id];
+      if (reference.fromGroupId === this.props.group) return reference.toChannelId;
+      return false;
+    }
+
     render() {
         const { classes } = this.props;
 
@@ -58,11 +65,16 @@ class Group extends Component {
           <Collapse in={this.state.open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
             {
-                 this.props.GroupLists.items.map((id) => {
-                   const listId = this.listIsInGroup(id);
-                    if (listId) return <TaskList list={listId} key={listId} />
-                  }
-                )
+              this.props.GroupLists.items.map((id) => {
+                const listId = this.listIsInGroup(id);
+                if (listId) return <TaskList list={listId} key={listId} />
+              })
+            }
+            {
+              this.props.GroupChannels.items.map((id) => {
+                const channelId = this.channelIsInGroup(id);
+                if (channelId) return <Channel channel={channelId} key={channelId} />
+              })
             }
             </List>
           </Collapse>
@@ -77,7 +89,8 @@ Group.propTypes = {
 
 const mapStateToProps = state => ({
   Group: state.orm.Group,
-  GroupLists: state.orm.GroupLists
+  GroupLists: state.orm.GroupLists,
+  GroupChannels: state.orm.GroupChannels
 });
 
 export default withStyles(styles)(connect(mapStateToProps)(Group));

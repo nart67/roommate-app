@@ -13,7 +13,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AppRouter from '../../routers/AppRouter';
 import DrawerList from '../Drawer/DrawerList';
 import { BrowserRouter, Route, Switch, Link, NavLink } from 'react-router-dom';
-import { createUser, GroupActions, ListActions, 
+import { createUser, GroupActions, ListActions, ChannelActions,
   createTask, removeTask, updateTask } from '../../actions/orm';
 import { connect } from 'react-redux';
 import socket from '../../socket/socket';
@@ -57,12 +57,15 @@ const styles = theme => ({
   },
 });
 
-// Define your article
+// Define your list
 const list = new schema.Entity('lists');
 
-// Define your comments schema
+const channel = new schema.Entity('channels');
+
+// Define your group schema
 const group = new schema.Entity('groups', {
-  lists: [list]
+  lists: [list],
+  channels: [channel]
 });
 
 // Define a users schema
@@ -78,6 +81,7 @@ class SideNav extends React.Component {
   constructor(props) {
     super(props);
     this.getGroups();
+    this.subscribeSocket();
   }
 
   handleDrawerToggle = () => {
@@ -101,7 +105,7 @@ class SideNav extends React.Component {
 
   updateData(normalizedData) {
     this.setState((prevState, props) => {user: normalizedData.result});
-    const {users, groups, lists} = normalizedData.entities;
+    const {users, groups, lists, channels} = normalizedData.entities;
     for (const key in users) {
         if (users.hasOwnProperty(key))
             this.props.dispatch(createUser(users[key]));
@@ -109,17 +113,20 @@ class SideNav extends React.Component {
     for (const key in groups) {
         if (groups.hasOwnProperty(key)) {
             this.props.dispatch(GroupActions.createGroup(groups[key]));
-            this.subscribeSocket(groups[key].id);
+            socket.emit('subscribe', groups[key].id);
         }
     }
     for (const key in lists) {
         if (lists.hasOwnProperty(key))
             this.props.dispatch(ListActions.createList(lists[key]));
     }
+    for (const key in channels) {
+      if (channels.hasOwnProperty(key))
+          this.props.dispatch(ChannelActions.createChannel(channels[key]));
+    }
   }
 
-  subscribeSocket(group) {
-    socket.emit('subscribe', group);
+  subscribeSocket() {
     const self = this;
     socket.on('list', function(data) {
         console.log(data);
@@ -138,6 +145,24 @@ class SideNav extends React.Component {
         default:
             break;
         }
+    });
+    socket.on('channel', function(data) {
+      console.log(data);
+      switch (data.type) {
+      case 'ADD':
+          self.props.dispatch(ChannelActions.createChannel(data.channel));
+          self.props.dispatch(GroupActions.addChannel(data.channel));
+          break;
+      case 'DELETE':
+          self.props.dispatch(ChannelActions.removeChannel(data.channel));
+          self.props.dispatch(GroupActions.removeChannel(data.channel));
+          break;
+      case 'UPDATE':
+          self.props.dispatch(ChannelActions.updateChannel(data.channel));
+          break;
+      default:
+          break;
+      }
     });
     socket.on('task', function(data) {
       console.log(data);

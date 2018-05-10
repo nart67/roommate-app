@@ -37,10 +37,12 @@ class GroupMenu extends Component {
                 open={Boolean(anchorEl)}
                 onClose={this.handleClose}
             >
-                <Link to={`/groups/${this.props.group}/lists`}>
+                <Link to={`/groups/${this.props.group}/lists/add`}>
                   <MenuItem onClick={this.handleClose}>Add List</MenuItem>
                 </Link>
-                <MenuItem onClick={this.handleClose}>Add Channel</MenuItem>
+                <Link to={`/groups/${this.props.group}/channels/add`}>
+                  <MenuItem onClick={this.handleClose}>Add Channel</MenuItem>
+                </Link>
                 <MenuItem onClick={this.handleClose}>Edit Group</MenuItem>
             </Menu>
             </div>
