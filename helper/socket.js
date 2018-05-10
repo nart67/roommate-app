@@ -41,6 +41,14 @@ const createDefault = function() {
       console.log('leaving room', room);
       socket.leave(room); 
     });
+
+    socket.on('join chat', function(room) {
+      socket.join('chat/' + room);
+    });
+
+    socket.on('leave chat', function(room) {
+      socket.leave('chat/' + room);
+    });
   });
 }
 
