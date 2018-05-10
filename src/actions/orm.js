@@ -14,6 +14,22 @@ export const ListActions = {
     })
 }
 
+// Channel actions
+export const ChannelActions = {
+    createChannel: (payload) => ({
+        type: 'CREATE_CHANNEL',
+        payload
+    }),
+    removeChannel: (payload) => ({
+        type: 'REMOVE_CHANNEL',
+        payload
+    }),
+    updateChannel: (payload) => ({
+        type: 'UPDATE_CHANNEL',
+        payload
+    })
+}
+
 // Task actions
 export const createTask = (payload) => ({
     type: 'CREATE_TASK',
@@ -50,6 +66,16 @@ export const GroupActions = {
     
     removeList: (payload) => ({
         type: 'REMOVE_LIST_FROM_GROUP',
+        payload
+    }),
+
+    addChannel: (payload) => ({
+        type: 'ADD_CHANNEL_TO_GROUP',
+        payload
+    }),
+    
+    removeChannel: (payload) => ({
+        type: 'REMOVE_CHANNEL_FROM_GROUP',
         payload
     })
 }
