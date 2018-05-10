@@ -21,16 +21,17 @@ const createDefault = function() {
   }))
   .on('connection', function(socket){
     console.log('a user connected');
-    socket.on('chat message', function(msg){
+    socket.on('sys message', function(msg){
       console.log(socket.request.user);
-      io.emit('chat message', msg);
+      io.emit('sys message', msg);
       console.log('message: ' + msg);
     });
 
     socket.on('send', function(data) {
+      const room = 'chat/' + data.room;
       console.log('message: ' + data.message);
-      if (socket.rooms[data.room]) io.sockets.in(data.room).emit('message', data);
-      else socket.emit('chat message', 'Not in room');
+      if (socket.rooms[room]) socket.to(room).emit('chat message', data);
+      else socket.emit('sys message', 'Not in room');
     });
 
     socket.on('subscribe', function(room) { 
@@ -43,10 +44,12 @@ const createDefault = function() {
     });
 
     socket.on('join chat', function(room) {
+      console.log('joining chat', room);
       socket.join('chat/' + room);
     });
 
     socket.on('leave chat', function(room) {
+      console.log('leaving chat', room);
       socket.leave('chat/' + room);
     });
   });
@@ -58,7 +61,7 @@ const authenticateRoom = function(user, room, socket) {
     else {
       console.log('joining room', room);
       socket.join(room);
-      socket.emit('chat message', 'joined ' + room);
+      socket.emit('sys message', 'joined ' + room);
     }
   });
 }
