@@ -32,7 +32,10 @@ userSchema.statics.findOrCreate = function findOrCreate(user, callback) {
 
 userSchema.statics.profile = function profile(user_id, callback) {
   this.findById(user_id).populate(
-    { path :'groups', populate: { path: 'lists' }}
+    { path :'groups', populate: [
+      { path: 'lists' },
+      { path: 'channels' }
+    ]}
   )
   .exec(
     function(err, profile) {
