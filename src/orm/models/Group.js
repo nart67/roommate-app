@@ -30,5 +30,6 @@ Group.modelName = 'Group';
 Group.fields = {
     id: attr(),
     displayName: attr(),
-    lists: many('TaskList')
+    lists: many('TaskList'),
+    channels: many('Channel')
 };
