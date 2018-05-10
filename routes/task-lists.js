@@ -22,7 +22,7 @@ router.put('/:id', function(req, res) {
       if (err) res.status(404).json({message: "Not found"});
       else {
         res.status(200).json({message: "Update successful"});
-        emit(groupId, 'list', {type: 'ADD', task: newTaskList}, socket);
+        emit(groupId, 'list', {type: 'ADD', list: newTaskList}, socket);
       }
     })
   });
