@@ -22,7 +22,7 @@ router.put('/:id', function(req, res) {
       if (err) res.status(404).json({message: "Not found"});
       else {
         res.status(200).json({message: "Update successful"});
-        emit(groupId, 'channel', {type: 'ADD', channel: newChannel}, socket);
+        emit(groupId, 'channel', {type: 'UPDATE', channel: newChannel}, socket);
       }
     })
   });
@@ -40,7 +40,7 @@ router.put('/:id', function(req, res) {
         Group.findById(req.params.groupId, function(err, group) {
           group.removeChannel(channel._id);
           res.status(200).json({message: "Delete successful"});
-          emit(groupId, 'list', {type: 'DELETE', list: channel}, socket);
+          emit(groupId, 'channel', {type: 'DELETE', channel: channel}, socket);
         });
       }
     })
@@ -62,7 +62,7 @@ router.put('/:id', function(req, res) {
         Group.findById(req.params.groupId, function(err, group) {
           group.addChannel(newChannel._id);
           res.status(201).json({message: "Add successful", channel: newChannel});
-          emit(groupId, 'list', {type: 'ADD', list: newChannel}, socket);
+          emit(groupId, 'channel', {type: 'ADD', channel: newChannel}, socket);
         });
       }
     });
