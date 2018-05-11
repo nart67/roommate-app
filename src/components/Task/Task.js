@@ -23,7 +23,7 @@ class Task extends Component {
     }
     
     delete = () => {
-        fetch(`/groups/${this.props.group}/lists/${this.props.list}` +
+        fetch(`/api/groups/${this.props.group}/lists/${this.props.list}` +
             `/tasks/${this.props.task}`, {
           credentials: 'same-origin',
           method: 'DELETE',
@@ -47,7 +47,7 @@ class Task extends Component {
         const data = new URLSearchParams();
         data.append('task', JSON.stringify(task));
 
-        fetch(`/groups/${this.props.group}/lists/${this.props.list}` +
+        fetch(`/api/groups/${this.props.group}/lists/${this.props.list}` +
             `/tasks/${this.props.task}`, {
           body: data,
           credentials: 'same-origin',

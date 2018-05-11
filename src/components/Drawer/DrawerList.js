@@ -18,7 +18,7 @@ class DrawerList extends Component {
     }
 
     logout() {
-        fetch('/logout', {credentials: 'same-origin'})
+        fetch('/api/logout', {credentials: 'same-origin'})
         .then(response => {
             this.props.dispatch(logout());
             this.props.history.push('/');

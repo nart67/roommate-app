@@ -42,7 +42,7 @@ class AddTask extends Component {
     submit = () => {
         var data = new URLSearchParams();
         data.append('task', JSON.stringify({title: this.state.value}));
-        fetch(`/groups/${this.props.group}/lists/${this.props.list}/tasks`, {
+        fetch(`/api/groups/${this.props.group}/lists/${this.props.list}/tasks`, {
           body: data,
           credentials: 'same-origin',
           method: 'POST',

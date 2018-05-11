@@ -32,7 +32,7 @@ class ViewTaskList extends Component {
      }
      
     getTasks = () => {
-        fetch(`/lists/${this.list_id}/tasks`, {credentials: 'same-origin'})
+        fetch(`/api/lists/${this.list_id}/tasks`, {credentials: 'same-origin'})
         .then(response => {
             const contentType = response.headers.get("content-type");
             if (contentType && contentType.indexOf("application/json") !== -1) {

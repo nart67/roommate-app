@@ -42,7 +42,7 @@ class AddChannel extends Component {
     submit = () => {
         var data = new URLSearchParams();
         data.append('channel', JSON.stringify({displayName: this.state.value}));
-        fetch(`/groups/${this.props.match.params.id}/channels/`, {
+        fetch(`/api/groups/${this.props.match.params.id}/channels/`, {
           body: data,
           credentials: 'same-origin',
           method: 'POST',

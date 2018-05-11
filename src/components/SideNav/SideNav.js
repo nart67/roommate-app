@@ -91,7 +91,7 @@ class SideNav extends React.Component {
 
   getGroups() {
     this.fetched = true;
-    fetch('/users', {credentials: 'same-origin'})
+    fetch('/api/users', {credentials: 'same-origin'})
     .then(response => {
         const contentType = response.headers.get("content-type");
         if (contentType && contentType.indexOf("application/json") !== -1) {

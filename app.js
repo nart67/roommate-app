@@ -41,6 +41,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Use Mongo store for session information 
@@ -51,20 +52,22 @@ app.use(require('./helper/session').middleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', index);
-app.use('/users', users);
-app.use('/auth', auth);
-app.use('/groups', groups);
-app.use('/lists', lists);
-app.use('/checkAuth', require('connect-ensure-login').ensureLoggedIn(),
+var router = express.Router();
+router.use('/users', users);
+router.use('/auth', auth);
+router.use('/groups', groups);
+router.use('/lists', lists);
+router.use('/checkAuth', require('connect-ensure-login').ensureLoggedIn(),
   function(req, res) {
     res.status(200).json({message: 'logged in'});
   });
 
-app.get('/logout', function(req, res){
+router.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
 });
+
+app.use('/api', router);
 
 // Temp testing stuff
 app.get('/login',

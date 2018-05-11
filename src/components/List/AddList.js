@@ -42,7 +42,7 @@ class AddList extends Component {
     submit = () => {
         var data = new URLSearchParams();
         data.append('taskList', JSON.stringify({displayName: this.state.value}));
-        fetch(`/groups/${this.props.match.params.id}/lists/`, {
+        fetch(`/api/groups/${this.props.match.params.id}/lists/`, {
           body: data,
           credentials: 'same-origin',
           method: 'POST',

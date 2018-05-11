@@ -16,7 +16,7 @@ class App extends Component {
   }
 
   checkLogin() {
-    fetch('/checkAuth/', {
+    fetch('/api/checkAuth/', {
       credentials: 'same-origin'
     })
     .then(response => {

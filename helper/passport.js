@@ -9,7 +9,7 @@ var FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET;
 var GoogleStrategy = new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "https://localhost:3000/auth/google/callback"
+    callbackURL: process.env.DOMAIN_URL + "/api/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
     User.findOrCreate({ googleId: profile.id }, function (err, user) {
@@ -24,7 +24,7 @@ var GoogleStrategy = new GoogleStrategy({
   var FacebookStrategy = new FacebookStrategy({
     clientID: FACEBOOK_CLIENT_ID,
     clientSecret: FACEBOOK_CLIENT_SECRET,
-    callbackURL: "https://app.test:3000/auth/facebook/callback"
+    callbackURL: process.env.DOMAIN_URL + "/api/auth/facebook/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
     User.findOrCreate({ facebookId: profile.id }, function (err, user) {

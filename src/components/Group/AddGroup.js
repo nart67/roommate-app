@@ -45,7 +45,7 @@ class AddGroup extends Component {
     submit = () => {
         var data = new URLSearchParams();
         data.append('group', JSON.stringify({displayName: this.state.value}));
-        fetch(`/groups/`, {
+        fetch(`/api/groups/`, {
           body: data,
           credentials: 'same-origin',
           method: 'POST',
