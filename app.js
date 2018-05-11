@@ -67,7 +67,12 @@ router.get('/logout', function(req, res){
   res.redirect('/');
 });
 
-app.use('/api', router);
+app.use('/api', function nocache(req, res, next) {
+  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  res.header('Expires', '-1');
+  res.header('Pragma', 'no-cache');
+  next();
+}, router);
 
 // Temp testing stuff
 app.get('/login',
