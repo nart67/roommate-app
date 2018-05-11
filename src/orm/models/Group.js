@@ -19,6 +19,12 @@ export class Group extends Model {
         case 'REMOVE_LIST_FROM_GROUP':
             Group.withId(action.payload.group).lists.remove(action.payload.id);
             break;
+        case 'ADD_CHANNEL_TO_GROUP':
+            Group.withId(action.payload.group).channels.add(action.payload.id);
+            break;
+        case 'REMOVE_CHANNEL_FROM_GROUP':
+            Group.withId(action.payload.group).channels.remove(action.payload.id);
+            break;
         default:
             break;
         }
