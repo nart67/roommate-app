@@ -7,7 +7,8 @@
     "react": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "npm install --only=dev && npm install && npm run build"
   },
   "dependencies": {
     "@material-ui/icons": "^1.0.0-beta.43",
@@ -46,6 +47,5 @@
   },
   "main": "index.js",
   "author": "Dennis Tran <nartdensin@gmail.com>",
-  "license": "MIT",
-  "proxy": "https://localhost:3000"
+  "license": "MIT"
 }
