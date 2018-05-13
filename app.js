@@ -42,7 +42,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'build')));
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 // Use Mongo store for session information 
 app.use(require('./helper/session').middleware);
@@ -73,6 +73,10 @@ app.use('/api', function nocache(req, res, next) {
   res.header('Pragma', 'no-cache');
   next();
 }, router);
+
+app.get('/*', function(req, res) {
+  res.sendFile(path.resolve(__dirname, 'build', 'index.html'))
+});
 
 // Temp testing stuff
 app.get('/login',
