@@ -1,3 +1,4 @@
+// TODO: Convert to middleware/plugin for Mongoose
 exports = module.exports = function(Schema) {
     // Duplicate the ID field.
     Schema.virtual('id').get(function(){
