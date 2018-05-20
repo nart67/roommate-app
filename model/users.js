@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-    googleId: { type: String, unique: true },
-    facebookId: { type: String, unique: true},
+    googleId: { type: String, unique: true, sparse: true },
+    facebookId: { type: String, unique: true, sparse: true },
     email: String,
     displayName: String, 
     groups: [{type: Schema.Types.ObjectId, ref: 'Group', index: true}]
@@ -25,6 +25,8 @@ userSchema.statics.findOrCreate = function findOrCreate(user, callback) {
       return result 
         ? callback(err, result)
         : self.create(user, (err, result) => {
+          // TODO: need graceful error handling
+          console.log(err);
           return callback(err, result);
         });
     });
