@@ -8,6 +8,7 @@ router.use(require('connect-ensure-login').ensureLoggedIn());
 // Task list subroute
 router.use('/:groupId/lists', require('./task-lists'));
 router.use('/:groupId/channels', require('./channels'));
+router.use('/:groupId/invites', require('./invites'));
 
 // Update group
 router.put('/:id', function(req, res) {
