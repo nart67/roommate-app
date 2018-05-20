@@ -12,11 +12,13 @@ var userSchema = new Schema({
 require('./idVirtual')(userSchema);
 
 userSchema.method('addGroup', function(group_id) {
-  this.update({ $push: {groups: group_id}}, {}, () => {});
+  if (group_id && group_id !== '')
+    return this.update({ $addToSet: {groups: group_id}}, {}, () => {});
+  else return false;
 });
 
 userSchema.method('removeGroup', function(group_id) {
-  this.update({ $pull: {groups: group_id}}, {}, () => {});
+  return this.update({ $pull: {groups: group_id}}, {}, () => {});
 });
 
 userSchema.statics.findOrCreate = function findOrCreate(user, callback) {
