@@ -6,6 +6,7 @@ import { logout } from '../../actions/auth';
 import Group from './components/Group';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import { withStyles } from 'material-ui/styles';
+import LoggedInDrawer from './components/LoggedInDrawer';
 
 class DrawerList extends Component {
     state = {
@@ -29,32 +30,13 @@ class DrawerList extends Component {
         return (
           <List component="nav">
             <div>
-            { this.props.authenticated ||
-            <Link to='/login'>
-                <ListItem button>
-                    <ListItemText inset primary="Sign In" />
-                </ListItem>
-            </Link>
-            }
-
-            {
-                this.props.Group.items && this.props.Group.items.map((group) => 
-                    <Group group={group} key={group} />
-                )
-            }
-            <Link to='/groups/add'>
-                <ListItem button>
-                    <ListItemIcon>
-                        <GroupAddIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Add Group" />
-                </ListItem>
-            </Link>
-
-            { !this.props.authenticated ||
-            <ListItem button onClick={this.logout}>
-                <ListItemText inset primary="Log Out" />
-            </ListItem>
+            { this.props.authenticated ?
+                <LoggedInDrawer logout={this.logout} /> :
+                <Link to='/login'>
+                    <ListItem button>
+                        <ListItemText inset primary="Sign In" />
+                    </ListItem>
+                </Link>
             }
             </div>
           </List>
