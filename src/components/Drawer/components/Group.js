@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import List, { ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction } from 'material-ui/List';
+import List, { ListItem, ListItemText, ListItemSecondaryAction } from 'material-ui/List';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from 'material-ui/transitions/Collapse';
 import TaskList from './TaskList';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
 import { withStyles } from 'material-ui/styles';
 import GroupMenu from './GroupMenu';
 import GroupIcon from '@material-ui/icons/Group'
@@ -68,12 +67,14 @@ class Group extends Component {
               this.props.GroupLists.items.map((id) => {
                 const listId = this.listIsInGroup(id);
                 if (listId) return <TaskList list={listId} key={listId} />
+                return '';
               })
             }
             {
               this.props.GroupChannels.items.map((id) => {
                 const channelId = this.channelIsInGroup(id);
                 if (channelId) return <Channel channel={channelId} key={channelId} />
+                return '';
               })
             }
             </List>

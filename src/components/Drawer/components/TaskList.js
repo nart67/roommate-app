@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import React from 'react'
+import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import { Link } from 'react-router-dom';

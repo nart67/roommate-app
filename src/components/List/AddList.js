@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import Grid from 'material-ui/Grid';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 import NoteAdd from '@material-ui/icons/NoteAdd';
 
@@ -29,9 +27,6 @@ class AddList extends Component {
       value: ''
     }
 
-    constructor(props) {
-      super(props);
-    }
   
     handleChange = (event) => {
       this.setState({

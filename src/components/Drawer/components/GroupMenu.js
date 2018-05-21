@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import IconButton from 'material-ui/IconButton';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-import { ListItemSecondaryAction } from 'material-ui/List'
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
   

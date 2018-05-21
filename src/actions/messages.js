@@ -1,5 +1,4 @@
 let nextMessageId = 0
-const nextUserId = 0
 
 export const addMessage = (message, user) => ({
   type: 'ADD_MESSAGE',

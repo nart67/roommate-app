@@ -4,7 +4,6 @@ import { withStyles } from 'material-ui/styles';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import Hidden from 'material-ui/Hidden';
@@ -12,7 +11,7 @@ import Divider from 'material-ui/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
 import AppRouter from '../../routers/AppRouter';
 import DrawerList from '../Drawer/DrawerList';
-import { BrowserRouter, Route, Switch, Link, NavLink } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { createUser, GroupActions, ListActions, ChannelActions,
   createTask, removeTask, updateTask } from '../../actions/orm';
 import { connect } from 'react-redux';
@@ -105,8 +104,8 @@ class SideNav extends React.Component {
   }
 
   updateData(normalizedData) {
-    this.setState((prevState, props) => {user: normalizedData.result});
-    const {users, groups, lists, channels} = normalizedData.entities;
+    this.setState((prevState, props) => { return {user: normalizedData.result} });
+    const { users, groups, lists, channels } = normalizedData.entities;
     for (const key in users) {
         if (users.hasOwnProperty(key))
             this.props.dispatch(createUser(users[key]));

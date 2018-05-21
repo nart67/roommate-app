@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import { Link, withRouter } from 'react-router-dom';
+import React from 'react'
+import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Group from './Group';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';

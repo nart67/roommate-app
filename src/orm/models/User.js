@@ -1,4 +1,4 @@
-import {fk, many, attr, Model} from 'redux-orm';
+import {many, attr, Model} from 'redux-orm';
 
 export class User extends Model {
     // Declare any static or instance methods you need.

@@ -4,7 +4,6 @@ import IconButton from 'material-ui/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
 import { connect } from 'react-redux';
 
 const styles = theme => ({
@@ -18,9 +17,6 @@ const styles = theme => ({
   });
 
 class Task extends Component {
-    constructor(props) {
-        super(props);
-    }
     
     delete = () => {
         fetch(`/api/groups/${this.props.group}/lists/${this.props.list}` +

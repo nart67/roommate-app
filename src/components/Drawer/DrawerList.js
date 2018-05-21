@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import List, { ListItem, ListItemText } from 'material-ui/List';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
-import Group from './components/Group';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
-import { withStyles } from 'material-ui/styles';
 import LoggedInDrawer from './components/LoggedInDrawer';
 
 class DrawerList extends Component {

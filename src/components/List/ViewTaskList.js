@@ -21,7 +21,7 @@ class ViewTaskList extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        if (nextProps.match.params.id != this.list_id) {
+        if (nextProps.match.params.id !== this.list_id) {
             this.list_id = nextProps.match.params.id;
             this.props.lists[this.list_id] || this.getTasks();
         }

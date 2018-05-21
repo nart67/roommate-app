@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch, Link, NavLink } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Home from '../components/Home/Home';
 import Login from '../components/Login/Login';
 import ViewTaskList from '../components/List/ViewTaskList';

@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-import Grid from 'material-ui/Grid';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 import NoteAdd from '@material-ui/icons/NoteAdd';
 import { connect } from 'react-redux';
 import { GroupActions } from '../../actions/orm';
-import { socket } from '../../socket/socket';
 
 const styles = theme => ({
     textField: {
@@ -30,10 +27,6 @@ const styles = theme => ({
 class AddGroup extends Component {
     state = {
       value: ''
-    }
-
-    constructor(props) {
-      super(props);
     }
   
     handleChange = (event) => {

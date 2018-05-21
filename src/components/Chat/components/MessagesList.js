@@ -2,12 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Message from './Message'
 import { connect } from 'react-redux';
-import ReactDOM from 'react-dom';
 
 class MessagesList extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   componentDidUpdate() {
     this.scrollToBottom();

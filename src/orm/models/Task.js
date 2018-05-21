@@ -1,4 +1,4 @@
-import {fk, many, attr, Model} from 'redux-orm';
+import {fk, attr, Model} from 'redux-orm';
 
 export class Task extends Model {
     static reducer(action, Task, session) {

@@ -13,7 +13,7 @@ class Chat extends Component {
     }
     
     componentWillReceiveProps(nextProps) {
-        if (nextProps.match.params.id != this.room) {
+        if (nextProps.match.params.id !== this.room) {
             const nextRoom = nextProps.match.params.id;
             this.joinChat(nextRoom, this.room);
             this.room = nextProps.match.params.id;
