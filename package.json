@@ -11,6 +11,7 @@
     "heroku-postbuild": "npm install --only=dev && npm install && npm run build"
   },
   "dependencies": {
+    "@material-ui/core": "^1.0.0",
     "@material-ui/icons": "^1.0.0-beta.43",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
@@ -22,7 +23,6 @@
     "express": "^4.15.5",
     "express-session": "^1.15.6",
     "jade": "~1.11.0",
-    "material-ui": "^1.0.0-beta.43",
     "mongoose": "^5.0.14",
     "morgan": "~1.9.0",
     "normalizr": "^3.2.4",
@@ -47,5 +47,6 @@
   },
   "main": "index.js",
   "author": "Dennis Tran <nartdensin@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "proxy": "https://localhost:3000"
 }

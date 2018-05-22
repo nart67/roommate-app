@@ -1,7 +1,7 @@
 import React from 'react'
-import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core/';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ChatIcon from '@material-ui/icons/ChatBubbleOutline';

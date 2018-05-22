@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import MessagesList from './components/MessagesList';
 import AddMessage from './components/AddMessage';
 import './Chat.css';
-import Paper from 'material-ui/Paper';
+import Paper from '@material-ui/core/Paper';
 import socket from '../../socket/socket';
 
 class Chat extends Component {

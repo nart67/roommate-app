@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { createTask } from '../../actions/orm';
 import { addList } from '../../actions/lists';
-import Grid from 'material-ui/Grid';
-import Paper from 'material-ui/Paper';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import './ViewTaskList.css';
 import AddTask from '../Task/AddTask';
 import socket from '../../socket/socket';

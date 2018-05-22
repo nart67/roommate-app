@@ -1,5 +1,5 @@
 import React from 'react'
-import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core/';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Group from './Group';
@@ -20,6 +20,15 @@ const LoggedInDrawer = (props) => {
                     <GroupAddIcon />
                 </ListItemIcon>
                 <ListItemText primary="Add Group" />
+            </ListItem>
+        </Link>
+
+        <Link to='/invites'>
+            <ListItem button>
+                <ListItemIcon>
+                    <GroupAddIcon />
+                </ListItemIcon>
+                <ListItemText primary="View Invitations" />
             </ListItem>
         </Link>
 

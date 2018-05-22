@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import IconButton from 'material-ui/IconButton';
-import Menu, { MenuItem } from 'material-ui/Menu';
+import IconButton from '@material-ui/core/IconButton';
+import { Menu, MenuItem } from '@material-ui/core/';
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';

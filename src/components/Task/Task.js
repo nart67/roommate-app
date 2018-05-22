@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Checkbox from 'material-ui/Checkbox';
-import IconButton from 'material-ui/IconButton';
+import Checkbox from '@material-ui/core/Checkbox';
+import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 
 const styles = theme => ({
