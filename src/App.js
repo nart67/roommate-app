@@ -5,7 +5,7 @@ import SideNav from './components/SideNav/SideNav';
 import { connect } from 'react-redux';
 import { login } from './actions/auth';
 
-import CssBaseline from 'material-ui/CssBaseline';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 class App extends Component {
   constructor(props) {
