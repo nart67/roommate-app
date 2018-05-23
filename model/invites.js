@@ -26,13 +26,29 @@ inviteSchema.static('useInvite', function(id, user_id, callback) {
         }
         if (!user) return callback(new Error('user not found'));
 
-        let addGroup = user.addGroup();
+        let addGroup = user.addGroup(invite.group);
         let deleteInvite = invite.remove();
         // TODO: Potentially rewrite to use real promises instead of thenable queries
         Promise.all([addGroup, deleteInvite]).then(function(values) {
             if (!values[0] || values[0].nModified < 1) 
                 return callback(new Error('already in group'));
             return callback();
+        });
+    });
+});
+
+inviteSchema.static('removeInvite', async function(id, user_id) {
+    const self = this;
+    return new Promise(function(resolve, reject) {
+        self.findById(id, async function(err, invite) {
+            if (err) return reject(err);
+            if (!invite || invite.recipient != user_id) 
+                return reject(new Error('invalid invite'));
+    
+            let deleteInvite = invite.remove();
+            deleteInvite.then(function(invite) {
+                return resolve(invite);
+            });
         });
     });
 });
