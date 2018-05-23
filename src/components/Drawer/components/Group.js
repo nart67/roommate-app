@@ -58,7 +58,7 @@ class Group extends Component {
             <GroupIcon className={classes.icon} />
             <ListItemText primary={ this.group.displayName } />
             <ListItemSecondaryAction>
-              <GroupMenu group={this.props.group} />
+              <GroupMenu group={this.props.group} groupName={this.group.displayName} />
             </ListItemSecondaryAction>
           </ListItem>
           <Collapse in={this.state.open} timeout="auto" unmountOnExit>
