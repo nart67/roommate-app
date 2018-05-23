@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Group from './Group';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import ContactMailIcon from '@material-ui/icons/ContactMail';
 
 const LoggedInDrawer = (props) => {
     return (
@@ -26,7 +27,7 @@ const LoggedInDrawer = (props) => {
         <Link to='/invites'>
             <ListItem button>
                 <ListItemIcon>
-                    <GroupAddIcon />
+                    <ContactMailIcon />
                 </ListItemIcon>
                 <ListItemText primary="View Invitations" />
             </ListItem>

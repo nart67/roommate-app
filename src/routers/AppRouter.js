@@ -7,17 +7,19 @@ import AddList from '../components/List/AddList';
 import AddGroup from '../components/Group/AddGroup';
 import AddChannel from '../components/Channel/AddChannel';
 import Chat from '../components/Chat/Chat';
+import ViewInvites from '../components/Invite/ViewInvites';
 
 const AppRouter = () => (
     <div>
       <Switch>
-        <Route path="/" component={Home} exact={true} />
-        <Route path="/login" component={Login} />
+        <Route path='/' component={Home} exact={true} />
+        <Route path='/login' exact component={Login} />
         <Route path='/lists/:id' exact component={ViewTaskList} />
         <Route path='/groups/:id/lists/add' exact component={AddList} />
         <Route path='/groups/:id/channels/add' exact component={AddChannel} />
         <Route path='/groups/add' exact component={AddGroup} />
         <Route path='/channels/:id' exact component={Chat} />
+        <Route path='/invites' exact component={ViewInvites} />
       </Switch>
     </div>
 );
