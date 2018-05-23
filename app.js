@@ -10,6 +10,7 @@ var users = require('./routes/users');
 var auth = require('./routes/auth');
 var groups = require('./routes/groups');
 var lists = require('./routes/task-lists');
+var invites = require('./routes/invites');
 
 var app = express();
 
@@ -41,7 +42,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'build')));
+if (process.env.host != 'local') app.use(express.static(path.join(__dirname, 'build')));
 // app.use(express.static(path.join(__dirname, 'public')));
 
 // Use Mongo store for session information 
@@ -57,6 +58,7 @@ router.use('/users', users);
 router.use('/auth', auth);
 router.use('/groups', groups);
 router.use('/lists', lists);
+router.use('/invites', invites);
 router.use('/checkAuth', require('connect-ensure-login').ensureLoggedIn(),
   function(req, res) {
     res.status(200).json({message: 'logged in'});
@@ -74,9 +76,10 @@ app.use('/api', function nocache(req, res, next) {
   next();
 }, router);
 
-app.get('/*', function(req, res) {
-  res.sendFile(path.resolve(__dirname, 'build', 'index.html'))
-});
+if (process.env.host != 'local')
+  app.get('/*', function(req, res) {
+    res.sendFile(path.resolve(__dirname, 'build', 'index.html'))
+  });
 
 // Temp testing stuff
 app.get('/login',
