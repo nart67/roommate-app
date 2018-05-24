@@ -4,6 +4,11 @@ var Channel = require('../model/channels').Channel;
 var Group = require('../model/groups').Group;
 var emit = require('../helper/socket').emit;
 
+router.use(function(req, res, next) {
+  if (!req.user) require('connect-ensure-login').ensureLoggedIn();
+  else next()
+});
+
 // Messages subroute
 router.use('/:channelId/messages', require('./messages'));
 
@@ -51,6 +56,7 @@ router.put('/:id', function(req, res) {
     var newChannel = JSON.parse(req.body.channel);
     var socket = req.body.socket;
     var groupId = req.params.groupId;
+    if (!groupId) return res.status(400).json({message: "Missing group"});
 
     newChannel = new Channel({
       ...newChannel,

@@ -11,6 +11,7 @@ var auth = require('./routes/auth');
 var groups = require('./routes/groups');
 var lists = require('./routes/task-lists');
 var invites = require('./routes/invites');
+var channels = require('./routes/channels');
 
 var app = express();
 
@@ -59,6 +60,7 @@ router.use('/auth', auth);
 router.use('/groups', groups);
 router.use('/lists', lists);
 router.use('/invites', invites);
+router.use('/channels', channels);
 router.use('/checkAuth', require('connect-ensure-login').ensureLoggedIn(),
   function(req, res) {
     res.status(200).json({message: 'logged in'});
