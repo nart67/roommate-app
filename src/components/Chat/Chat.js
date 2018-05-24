@@ -3,13 +3,15 @@ import MessagesList from './components/MessagesList';
 import AddMessage from './components/AddMessage';
 import './Chat.css';
 import Paper from '@material-ui/core/Paper';
+import { connect } from 'react-redux';
 import socket from '../../socket/socket';
+import { messageReceived, clearMessages } from '../../actions/messages';
 
 class Chat extends Component {
     constructor(props) {
         super(props);
         this.room = props.match.params.id;
-        this.joinChat(this.room);
+        if (this.room !== socket.currentRoom) this.joinChat(this.room);
     }
     
     componentWillReceiveProps(nextProps) {
@@ -20,9 +22,29 @@ class Chat extends Component {
         }
     }
 
-    joinChat(room, prevRoom) {
+    joinChat = (room, prevRoom) => {
         if (prevRoom) socket.emit('leave chat', prevRoom);
         socket.emit('join chat', room);
+        socket.currentRoom = room;
+        this.props.clear();
+        this.getMessages(room);
+    }
+
+    getMessages(room) {
+        fetch(`/api/channels/${room}/messages`, {credentials: 'same-origin'})
+        .then(response => {
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+              return response.json();
+            }
+        }).then(data => {
+            if (!data) return;
+            for (let i = 0; i < data.messages.length; i++) {
+                const message = data.messages[i].message;
+                const user = data.messages[i].user.displayName;
+                this.props.addMessage(message, user);
+            }
+        });
     }
 
     render() {
@@ -40,5 +62,10 @@ class Chat extends Component {
     } 
 
 } 
-
-export default Chat;
+const mapDispatchToProps = dispatch => ({
+    addMessage: (message, user) => {
+      dispatch(messageReceived(message, user))
+    },
+    clear: () => dispatch(clearMessages())
+  });
+  export default connect(() => {return {}}, mapDispatchToProps)(Chat);
