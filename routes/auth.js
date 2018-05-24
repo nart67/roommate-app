@@ -22,4 +22,11 @@ router.get('/facebook/callback',
     res.redirect('/');
   });
 
+router.get('/demo',
+  passport.authenticate('local', 
+  { successRedirect: '/',
+    failureRedirect: '/login'
+  })
+);
+
 module.exports = router;

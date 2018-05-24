@@ -20,9 +20,10 @@ var db = require('./helper/database');
 
 // Passport authentication setup
 var passport = require('passport');
-var { GoogleStrategy, FacebookStrategy } = require('./helper/passport');
+var { GoogleStrategy, FacebookStrategy, LocalStrategy } = require('./helper/passport');
 passport.use(GoogleStrategy);
 passport.use(FacebookStrategy);
+passport.use(LocalStrategy);
 
 // Configure Passport authenticated session persistence.
 passport.serializeUser(function(user, cb) {

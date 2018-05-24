@@ -6,7 +6,8 @@ var userSchema = new Schema({
     facebookId: { type: String, unique: true, sparse: true },
     email: String,
     displayName: String, 
-    groups: [{type: Schema.Types.ObjectId, ref: 'Group', index: true}]
+    groups: [{type: Schema.Types.ObjectId, ref: 'Group', index: true}],
+    username: { type: String, unique: true, sparse: true }
 });
 
 require('./idVirtual')(userSchema);

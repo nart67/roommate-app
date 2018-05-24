@@ -14,6 +14,11 @@ const Login = () => (
       <Icon name='google plus' /> Log In with Google
     </Button>
     </a>
+    <a href={API_URL + '/api/auth/demo/'}>
+    <Button>
+      Log In with Demo Account
+    </Button>
+    </a>
   </div>
 )
 
