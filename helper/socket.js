@@ -3,6 +3,7 @@ var sessionStore = require('./session').store;
 var passportSocketIo = require('passport.socketio');
 var User = require('../model/users').User;
 var Group = require('../model/groups').Group;
+var Message = require('../model/messages').Message;
 
 const initialize = function(server) {
   io = require('socket.io')(server);
@@ -30,7 +31,16 @@ const createDefault = function() {
     socket.on('send', function(data) {
       const room = 'chat/' + data.room;
       console.log('message: ' + data.message);
-      if (socket.rooms[room]) socket.to(room).emit('chat message', data);
+      if (socket.rooms[room]) {
+        socket.to(room).emit('chat message', data);
+        const promise = Message.create({
+          message: data.message,
+          user: socket.request.user.id,
+          channel: data.room
+        });
+        promise.then()
+        .catch((e) => console.log(e));
+      }
       else socket.emit('sys message', 'Not in room');
     });
 
