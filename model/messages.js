@@ -14,6 +14,8 @@ messageSchema.static('latestMessages', function(id, user_id, callback) {
     this.find({channel: id})
         .sort('-timestamp')
         .limit(100)
+        .sort('timestamp')
+        .populate({ path: 'user', select: 'displayName'})
         .exec(function(err, messages) {
             if (err) {
                 callback(err);
@@ -23,3 +25,10 @@ messageSchema.static('latestMessages', function(id, user_id, callback) {
             callback(null, messages);
     });
 });
+
+var Message = mongoose.model('Message', messageSchema);
+
+module.exports = {
+    messageSchema,
+    Message
+}
