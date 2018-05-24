@@ -2,6 +2,7 @@ const io = require('socket.io-client');
 
 const socket = io();
 socket.lists = {};
+socket.currentRoom = null;
 
 socket.on('reconnecting', (attemptNumber) => {
     console.log('reconnecting: ' + attemptNumber);
