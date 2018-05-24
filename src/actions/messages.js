@@ -18,3 +18,10 @@ export const populateUsersList = users => ({
   type: 'USERS_LIST',
   users
 })
+
+export const clearMessages = () => {
+  nextMessageId = 0;
+  return ({
+    type: 'CLEAR_MESSAGES'
+  })
+}
